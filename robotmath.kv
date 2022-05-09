@@ -1,0 +1,484 @@
+#:import COLOR kivy.utils.get_color_from_hex
+#:set RED "#F94A69"
+#:set GREEN "#06A5AB"
+#:set WHITE "#FFFFFF"
+<WrappedLabel@Label>:
+    size_hint_y: None
+    height: self.texture_size[1] + (self.texture_size[1]/2)
+    text_size: root.width, None
+    size: self.texture_size
+    markup: True
+    font_name: "Roboto"
+<Label>:
+    halign: "center"
+    text_size: root.width, None
+    size: self.texture_size
+<Button>:
+    font_name: "Roboto"
+    font_size: min(self.height,self.width) / 4
+    bold: True
+    background_normal: "./images/button_normal.png"
+    background_down: "./images/button_down.png"
+    background_color: COLOR("#0066BA")
+    border: (2,2,2,2)
+
+
+
+
+<RobotMathRoot>:
+    orientation: "vertical"
+    robot_screen_manager: robot_screen_manager
+    math_screen: math_screen
+    fr_screen: fr_screen
+    lecture_screen: lecture_screen
+    op_screen: op_screen
+    facile_screen: facile_screen
+    difficile_screen: difficile_screen
+    mult_screen: mult_screen
+    diff_screen: diff_screen
+    compte_screen: compte_screen
+    francais_screen: francais_screen
+
+    ScreenManager:
+        id: robot_screen_manager
+        StartScreen:
+            name:"start_screen"
+        MathScreen:
+            id:math_screen
+            name:"math_screen"
+        FrancaisScreen:
+            id:francais_screen
+            name:"francais_screen"
+        FrScreen:
+            id: fr_screen
+            name: "fr_screen"
+        LectureScreen:
+            id: lecture_screen
+            name: "lecture_screen"
+        AboutScreen:
+            id: about_screen
+            name: "about_screen"
+        OperationScreen:
+            id: op_screen
+            name: "op_screen"
+        FacileScreen:
+            id: facile_screen
+            name: "facile_screen"
+        DifficileScreen:
+            id: difficile_screen
+            name: "difficile_screen"
+        CompteScreen:
+            id: compte_screen
+            name:"compte_screen"
+        MultScreen:
+            id: mult_screen
+            name: "mult_screen"
+        DiffScreen:
+            id: diff_screen
+            name: "diff_screen"
+
+<StartScreen@Screen>:
+    BoxLayout:
+            # Settings
+        orientation : "vertical"
+        padding : root.width * .02, root.height * .02
+        spacing : min(root.width, root.height) * .02
+
+        WrappedLabel:
+            text: "[b]Robot Pédagogique\nChoisissez entre les math et le français.[/b]"
+            font_size: min(root.height,root.width) / 10
+
+        Button:
+            text: "Math"
+            on_release: app.root.changeScreen(self.text.lower())
+        Button:
+            text: "Français"
+            on_release: app.root.changeScreen(self.text.lower())
+
+        Button:
+            text: "A propos"
+            background_color: COLOR(GREEN)
+            on_release: app.root.changeScreen(self.text.lower())
+###########################FRANCAIS#####################################
+<FrancaisScreen@Screen>:
+    BoxLayout:
+        # Settings
+        orientation : "vertical"
+        padding : root.width * .02, root.height * .02
+        spacing : min(root.width, root.height) * .02
+
+        WrappedLabel:
+            text: "[b]Robot Pédagogique de Français[/b]"
+            font_size: min(root.height,root.width) / 10
+
+        Button:
+            text: "Conjugaison"
+            on_release: app.root.changeScreen(self.text.lower())
+
+        Button:
+            text: "Grammaire"
+            on_release: app.root.changeScreen(self.text.lower())
+
+        Button:
+            text: "Orthographe"
+            on_release: app.root.changeScreen(self.text.lower())
+
+
+        Button:
+            text: "Vocabulaire"
+            on_release: app.root.changeScreen(self.text.lower())
+
+        Button:
+            text: "Lecture"
+            on_release: app.root.changeScreen(self.text.lower())
+
+        Button:
+            text: "[b]Retour[/b]"
+            markup:True
+            background_color: COLOR(RED)
+            on_release: app.root.changeScreen(self.text.lower())
+<FrScreen>:
+    question_text: question_text
+    answer_text: answer_text
+    BoxLayout:
+        orientation: "vertical"
+        padding : root.width * .02, root.height * .02
+        spacing : 10
+        WrappedLabel:
+            id: question_text
+            text: "Some dummy text"
+            font_size: min(root.height,root.width) / 15
+        TextInput:
+            id: answer_text
+            padding: 20, 20, 20, 20
+            size_hint: 1, 0.5
+            font_size: 20
+            multiline: False
+        Button:
+            text: "Valider"
+            size_hint: 1, 0.5
+            bold: True
+            background_color: "#0065EF"
+            on_press: app.root.math_popup.open(root.check_reponse())
+            on_release:root.question_text.text = root.get_question(root.types)
+            on_release:root.answer_text.text = ""
+        Button:
+            text: "[b]Retour[/b]"
+            markup:True
+            background_color: COLOR(RED)
+            on_release: app.root.changeScreen(self.text.lower())
+<LectureScreen@Screen>:
+    question_text: question_text
+    answer_text: answer_text
+    BoxLayout:
+        orientation: "vertical"
+        padding : root.width * .02, root.height * .02
+        spacing : 10
+        WrappedLabel:
+            id: question_text
+            text: "Some dummy text"
+            font_size: min(root.height,root.width) / 15
+        WrappedLabel:
+            id: answer_text
+            text: "[i] Appuyez sur le bouton [/i]écouter [i]puis parlez[/i]"
+            font_size: min(root.height,root.width) / 15
+            background_color: COLOR("#F8F8FF")
+        Button:
+            text: "Ecouter"
+            size_hint: 1, 0.5
+            bold: True
+            background_color: "#0065EF"
+            on_release: app.root.fr_screen.ecoute()
+        Button:
+            text: "Nouvelle Phrase"
+            size_hint: 1, 0.5
+            bold: True
+            background_color: COLOR(GREEN)
+            on_release: app.root.fr_screen.new_question()
+        Button:
+            text: "[b]Retour[/b]"
+            markup:True
+            background_color: COLOR(RED)
+            on_release: app.root.changeScreen(self.text.lower())
+
+
+###########################MATH#####################################
+<MathScreen@Screen>:
+    BoxLayout:
+        # Settings
+        orientation : "vertical"
+        padding : root.width * .02, root.height * .02
+        spacing : min(root.width, root.height) * .02
+
+        WrappedLabel:
+            text: "[b]Robot Pédagogique de Math[/b]"
+            font_size: min(root.height,root.width) / 10
+
+        Button:
+            text: "Addition"
+            on_release: app.root.changeScreen(self.text.lower())
+        Button:
+            text: "Soustraction"
+            on_release: app.root.changeScreen(self.text.lower())
+
+        Button:
+            text: "Multiplication"
+            on_release: app.root.changeScreen(self.text.lower())
+
+        Button:
+            text: "Division"
+            on_release: app.root.changeScreen(self.text.lower())
+
+        Button:
+            text: "Le compte est bon"
+            on_release: app.root.changeScreen(self.text.lower())
+
+        Button:
+            text: "Calculatrice inversée"
+            on_release: app.root.changeScreen(self.text.lower())
+        Button:
+            text: "[b]Retour[/b]"
+            markup:True
+            background_color: COLOR(RED)
+            on_release: app.root.changeScreen(self.text.lower())
+
+<OperationScreen>:
+    question_text: question_text
+    answer_text: answer_text
+    BoxLayout:
+        orientation: "vertical"
+        padding : root.width * .02, root.height * .02
+        spacing : 10
+        WrappedLabel:
+            id: question_text
+            text: "Some dummy text"
+            font_size: min(root.height,root.width) / 10
+        BoxLayout:
+            orientation:"horizontal"
+            size_hint_y: None
+            WrappedLabel:
+                id: answer_text
+                text: ""
+                font_size: min(root.height,root.width) / 10
+            Button:
+                id: clear_btn
+                text: "[b]Clear[/b]"
+                markup: True
+                size_hint: .15,.5
+                height: question_text.texture_size[1]
+                on_release: answer_text.text = ""
+        KeyPadOp:
+        Button:
+            text: "[b]Retour[/b]"
+            markup:True
+            background_color: COLOR(RED)
+            on_release: app.root.changeScreen(self.text.lower())
+            size_hint_y:.25
+
+<CompteScreen>:
+    question_text: question_text
+    answer_text: answer_text
+    BoxLayout:
+        orientation: "vertical"
+        padding : root.width * .02, root.height * .02
+        spacing : 10
+        WrappedLabel:
+            id: question_text
+            text: "Some dummy text"
+            font_size: min(root.height,root.width) / 15
+        BoxLayout:
+            orientation:"horizontal"
+            size_hint_y: None
+            WrappedLabel:
+                id: answer_text
+                text: ""
+                font_size: min(root.height,root.width) / 10
+            Button:
+                id: clear_btn
+                text: "[b]Clear[/b]"
+                markup: True
+                size_hint: .15,.3
+                height: question_text.texture_size[1]
+                on_release: answer_text.text = ""
+        KeyPadCompte:
+        Button:
+            text: "[b]Retour[/b]"
+            markup:True
+            background_color: COLOR(RED)
+            on_release: app.root.changeScreen(self.text.lower())
+            size_hint_y:.25
+
+
+<DiffScreen@Screen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding : root.width * .02, root.height * .02
+        spacing : 10
+        WrappedLabel:
+            id: diff_text
+            text: "Choisissez la difficulté"
+            font_size: min(root.height,root.width) / 10
+        Button:
+            text:"Facile"
+            background_color: COLOR(GREEN)
+            on_release: app.root.changeScreen(self.text.lower())
+        Button:
+            text:"Difficile"
+            background_color: COLOR(RED)
+            on_release: app.root.changeScreen(self.text.lower())
+        Button:
+            text: "[b]Retour[/b]"
+            markup:True
+            background_color: COLOR(RED)
+            on_release: app.root.changeScreen(self.text.lower())
+
+<FacileScreen>:
+    question_text: question_text
+    answer_text: answer_text
+    BoxLayout:
+        orientation: "vertical"
+        padding : root.width * .02, root.height * .02
+        spacing : 10
+        WrappedLabel:
+            id: question_text
+            text: "Some dummy text"
+            font_size: min(root.height,root.width) / 10
+        BoxLayout:
+            orientation:"horizontal"
+            size_hint_y: None
+            WrappedLabel:
+                id: answer_text
+                text: ""
+                font_size: min(root.height,root.width) / 10
+            Button:
+                id: clear_btn
+                text: "[b]Clear[/b]"
+                markup: True
+                size_hint: .15,.5
+                height: question_text.texture_size[1]
+                on_release: answer_text.text = ""
+        KeyPad:
+        Button:
+            text: "[b]Retour[/b]"
+            markup:True
+            background_color: COLOR(RED)
+            on_release: app.root.changeScreen(self.text.lower())
+            size_hint_y:.25
+
+
+<DifficileScreen>:
+    question_text: question_text
+    answer_text: answer_text
+    BoxLayout:
+        orientation: "vertical"
+        padding : root.width * .02, root.height * .02
+        spacing : 10
+        WrappedLabel:
+            id: question_text
+            text: "Some dummy text"
+            font_size: min(root.height,root.width) / 10
+        BoxLayout:
+            orientation:"horizontal"
+            size_hint_y: None
+            WrappedLabel:
+                id: answer_text
+                text: ""
+                font_size: min(root.height,root.width) / 10
+            Button:
+                id: clear_btn
+                text: "[b]Clear[/b]"
+                markup: True
+                size_hint: .15,.5
+                height: question_text.texture_size[1]
+                on_release: answer_text.text = ""
+        KeyPadDifficile:
+
+        Button:
+            text: "[b]Retour[/b]"
+            markup:True
+            background_color: COLOR(RED)
+            on_release: app.root.changeScreen(self.text.lower())
+            text_size: root.width, None
+            size: self.texture_size
+            size_hint_y:.25
+
+
+<MultScreen>:
+    result_label: result_label
+    answer_input: answer_input
+
+    BoxLayout:
+        orientation: "vertical"
+
+        BoxLayout:
+            orientation: "vertical"
+            padding: 100, 30, 100, 30
+        Label:
+            id: result_label
+            text: "Réaliser les multiplications suivantes"
+            halign: "center"
+            text_size: root.width, None
+            size: self.texture_size
+            font_size: 40
+            multiline: True
+        TextInput:
+            id: answer_input
+            padding: 20, 20, 20, 20
+            size_hint: 1, 0.5
+            font_size: 20
+            input_type: "number"
+            multiline: False
+        Button:
+            text: "Validate"
+            size_hint: 1, 0.5
+            bold: True
+            background_color: "#0065EF"
+            on_press: root.check_number()
+        Button:
+            text: "[b]Retour[/b]"
+            markup:True
+            background_color: COLOR(RED)
+            on_release: app.root.changeScreen(self.text.lower())
+
+<MathPopup>:
+    size_hint:.8, .8
+    title: "Résultat"
+    title_size: root.height * .05
+    auto_dissmiss: False
+    message: message
+    wrapped_button: wrapped_button
+    BoxLayout:
+        orientation: "vertical"
+        padding: root.width * .02, root.height * .02
+        spacing: min(root.width, root.height)
+        Label:
+            id: message
+            text:"Peu importe"
+            halign: "center"
+            markup:True
+            font_size: root.height / 10
+            text_size: self.width, None
+            center_y: .5
+        Button:
+            id: wrapped_button
+            text: "Fermer"
+            size_hint:1,None
+            height: root.height / 8
+            on_release: root.dismiss()
+
+<AboutScreen@Screen>:
+    BoxLayout:
+        padding: root.width * .02, root.height * .02
+        Label:
+            text: app.getText()
+            halign: "center"
+            markup: True
+            font_size: root.height / 20
+            text_size: self.width,  None
+            center_y: .5
+            on_ref_press: app.on_ref_press(*args)
+        Button:
+            text: "[b]Retour[/b]"
+            markup:True
+            background_color: COLOR(RED)
+            on_release: app.root.changeScreen(self.text.lower())
